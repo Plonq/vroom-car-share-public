@@ -1,0 +1,92 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Shaun O'Malley, Huon Imberger
+    Description: Booking Invoice template - gets rendered to PDF
+----------------------------------------------------------------------------------------------------------------------->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.css" %}">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static "carshare/css/pdf/invoice.css" %}">
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div id="logo" class="col-xs-5">
+            <a href="https://vroom-car-share.herokuapp.com/"><img
+                    src="https://vroom-car-share.herokuapp.com/static/images/vroom_logo.eae008acac4f.png"
+                    alt="Vroom Car Share"/></a>
+        </div>
+
+        <div class="col-xs-4 companycontact">
+            <p class="companyname">Vroom Car Share PTY LTD</p>
+            <p><a href="mailto:Contact@vroomcs.org">Contact@vroomcs.org</a></p>
+            <p><a href="tel:18001234564">1-800-123-4564</a></p>
+        </div>
+
+        <div class="col-xs-3 companyaddress">
+            <p>123 Fake Street</p>
+            <p>Melbourne, 3000</p>
+            <p>Australia</p>
+        </div>
+    </div>
+
+    <div class="header"><p>Payment Summary</p></div>
+    <hr/>
+
+    <div class="row">
+        <div class="col-xs-5">
+            <div class="row">
+                <div class="col-xs-6">Invoice Number:</div>
+                <div class="col-xs-6"><strong>{{ invoice.pk|stringformat:"05d" }}</strong></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">Invoice Date:</div>
+                <div class="col-xs-6">{{ invoice.date|date:'d/m/Y' }}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">Total Cost:</div>
+                <div class="col-xs-6">${{ invoice.amount|stringformat:".2f" }}</div>
+            </div>
+        </div>
+
+        <div class="col-xs-3">
+            <p><strong>{{ invoice.booking.user.first_name }} {{ invoice.booking.user.last_name }}</strong></p>
+            <p>{{ invoice.booking.user.address.address_line_1 }}</p>
+            <p>{{ invoice.booking.user.address.city }}, {{ invoice.booking.user.address.postcode }}</p>
+            <p>{{ invoice.booking.user.address.country }}</p>
+            <p>{{ invoice.booking.user.email }}</p>
+        </div>
+    </div>
+
+    <div class="row header">
+        <div class="col-xs-2">Booking ID</div>
+        <div class="col-xs-3">Description</div>
+        <div class="col-xs-3">Trip Start</div>
+        <div class="col-xs-3">Trip End</div>
+        <div class="col-xs-1 cost">Total</div>
+    </div>
+
+    <div class="row data">
+        <div class="col-xs-2"><strong>{{ invoice.booking.id }}</strong></div>
+        <div class="col-xs-3">{{ invoice.booking.vehicle.pod.description }}</div>
+        <div class="col-xs-3">{{ invoice.booking.schedule_start }}</div>
+        <div class="col-xs-3">{{ invoice.booking.schedule_end }}</div>
+        <div class="col-xs-1 cost">${{ invoice.booking.calculate_cost|stringformat:".2f" }}</div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <p>Thank you for choosing Vroom Car Share</p>
+            <p>Your credit card has been automatically processed</p>
+            <p>Direct enquiries to <a href="mailto:enquiries@vroomcs.org">enquiries@vroomcs.org</a></p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

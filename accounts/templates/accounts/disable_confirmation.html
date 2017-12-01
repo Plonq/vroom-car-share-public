@@ -1,0 +1,21 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Shaun O'Malley
+    Description: Confirmation page for disabling your account
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'base_narrow.html' %}
+{% block pagetitle %}{% block pageheader %}Disable Account{% endblock %}{% endblock %}
+{% block page-content %}
+
+    <div class="text-center top-spacer">
+        <h4>Are you Sure?</h4>
+        <h5> To re-activate account, please contact us via the contact us page</h5>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="confirm" value="1">
+            <button type="submit" class="btn btn-danger load-after-click">Disable</button>
+            <a class="btn btn-default" href="{% url 'profile' %}">Cancel</a>
+        </form>
+    </div>
+
+{% endblock %}

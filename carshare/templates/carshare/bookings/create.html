@@ -1,0 +1,159 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Steven Thompson, Huon Imberger
+    Description: Create Booking form
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'base_narrow.html' %}
+{% load static %}
+{% block pagetitle %}{% block pageheader %}New Booking for {{ vehicle.name }}{% endblock %}{% endblock %}
+
+{% block header %}
+    <link rel="stylesheet" type="text/css"  href="{% static 'carshare/css/bookings/create_extend.css' %}">
+{% endblock %}
+
+{% block page-content %}
+    <!-- Intro spiel -->
+    <div class="row bottom-spacer top-spacer">
+        <div class="col-xs-12 text-center">
+            <p>You have selected {{ vehicle.name }} the {{ vehicle.make }} {{ vehicle.model }}. Please read the information
+            below before confirming the booking. By booking a car through Vroom Car Share you accept the terms and
+            conditions.</p>
+            <p>You will receive an email confirmation upon approval of the booking.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Map and accompanying booking info -->
+        <div class="col-sm-6 bottom-spacer">
+            <div class="row">
+                <div class="col-xs-12" id="map"></div>
+            </div>
+            <div class="booking-info">
+                <div class="row text-center">
+                    <strong>Booking Information</strong>
+                </div>
+                <div class="row coloured-odd">
+                    <div class="col-xs-3">
+                        <strong>Name</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ vehicle.name }}</span>
+                    </div>
+                </div>
+                <div class="row coloured-even">
+                    <div class="col-xs-3">
+                        <strong>Make</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ vehicle.make }}</span>
+                    </div>
+                </div>
+                <div class="row coloured-odd">
+                    <div class="col-xs-3">
+                        <strong>Model</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ vehicle.model }}</span>
+                    </div>
+                </div>
+                <div class="row coloured-even">
+                    <div class="col-xs-3">
+                        <strong>Type</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ vehicle.type.description }}</span>
+                    </div>
+                </div>
+                <div class="row coloured-odd">
+                    <div class="col-xs-3">
+                        <strong>Location</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ vehicle.pod.description }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Booking form -->
+        <div class="col-sm-6">
+            {% load crispy_forms_tags %}
+            <form id="booking-form" class="validated-form" method="post">
+                {% crispy booking_form %}
+                <div class="booking-cost-block">
+                    <p><span id="booking-cost-text"></span></p>
+                </div>
+                <div class="buttons-right">
+                    <a class="btn btn-default" href="{% url 'carshare:booking_create_date' vehicle.id date.year date.month date.day %}">Back</a>
+                    <button type="submit" class="btn btn-success">Continue</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        // AJAX for calculating booking cost when start/end is changed
+        var daily_rate = "{{ vehicle.type.daily_rate }}";
+        var hourly_rate = "{{ vehicle.type.hourly_rate }}";
+        var inputs = $('#booking-form input, #booking-form select');
+        inputs.change(function() {
+            // Serialize form
+            data = $('#booking-form').serialize();
+
+            $.ajax({
+                method: 'POST',
+                url: "{% url 'carshare:ajax_booking_calculate_cost' vehicle.id %}",
+                data: data,
+                success: function (response) {
+                    cost = JSON.parse(response);
+                    var str = cost.days ? cost.days + " day" + (cost.days > 1 ? "s" : "") + " @ ${{ vehicle.type.daily_rate }}" : "";
+                    cost.days && cost.hours ? str += " + " : "";
+                    cost.hours ? str += cost.hours + " hour" + (cost.hours > 1 ? "s" : "") + " @ ${{ vehicle.type.hourly_rate }}" : "";
+                    str += " = <strong>" + cost.total + "</strong>";
+                    $('#booking-cost-text').html(str)
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(JSON.stringify(jqXHR));
+                    console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                }
+            });
+        });
+        // Also calculate on page load
+        $(document).ready(inputs.change());
+    </script>
+    <script>
+        function initMap() {
+            var styles = {
+                default: null,
+                hide: [
+                    {
+                        featureType: 'poi',
+                        stylers: [{visibility: 'off'}]
+                    },
+                    {
+                        featureType: 'transit',
+                        elementType: 'labels.icon',
+                        stylers: [{visibility: 'off'}]
+                    },
+                ]
+            };
+            var vehicle = {
+                lat: {{ vehicle.pod.latitude }},
+                lng: {{ vehicle.pod.longitude }}
+            };
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 16,
+                center: vehicle,
+                disableDefaultUI: true
+            });
+            map.setOptions({styles: styles['hide']});
+            var marker = new google.maps.Marker({
+                position: vehicle,
+                map: map,
+                icon: "{% static "carshare/images/Geo_icon.png" %}"
+            });
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxp8sbrSQCvnGpZedH-H7uND4GnIkwyQo&callback=initMap"></script>
+{% endblock %}

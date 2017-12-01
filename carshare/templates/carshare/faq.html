@@ -1,0 +1,146 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Huon Imberger
+    Description: Frequently Asked Questions
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'base_narrow.html' %}
+{% load static %}
+{% block pagetitle %}{% block pageheader %}Frequently Asked Questions{% endblock %}{% endblock %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/faq.css' %}">
+{% endblock header %}
+{% block page-content %}
+
+    <p class="top-spacer">Here are the most frequently asked questions about the services we provide.
+        If your question isn't listed please <a href="{% url 'carshare:contact_us' %}">contact us</a>.</p>
+
+    <button class="accordion">Where are the keys?</button>
+    <div class="panel">
+        <p>
+            Simply access the vehicle using your VroomCard, and find the keys in the car’s information pack in the glove
+            box. You will find the VroomCard reader on the car’s windscreen.<br>
+            As a courtesy to other Vroom Car Share customers, please ensure that you return the keys and information
+            pack to the glove box when returning your car.
+        </p>
+    </div>
+
+    <button class="accordion">What if I need fuel?</button>
+    <div class="panel">
+        <p>
+            You will find a fuel card in the car’s information pack in the glove box.
+            We ask our all of our Vroom Car Share customers to be considerate of other customers, and refuel before
+            returning the car if it is running low.<br>
+            In addition, please ensure that you return the fuel card and information pack to the glove box when
+            returning your car.
+        </p>
+    </div>
+
+    <button class="accordion">Do I need to return the car to the same pod?</button>
+    <div class="panel">
+        <p>
+            Yes please – the designated pod is the car’s home, and it must be returned there at completion of your
+            booking to ensure continued efficient service for the next customer’s booking.
+        </p>
+    </div>
+
+    <button class="accordion">There’s someone parked in my pod!</button>
+    <div class="panel">
+        <p>
+            Don’t worry, simply park in the closest available legal parking spot (green sign), then call us on
+            03 9123 4567 and tell us the licence plate of the vehicle in the Vroom pod, and where you parked.<br>
+            Do not pay any parking fees, and don’t worry about time limits, we will take care of that directly with
+            VicRoads.
+        </p>
+    </div>
+
+    <button class="accordion">When do I pay?</button>
+    <div class="panel">
+        <p>
+            You can pay your booking any time, either in advance, during or on completion.<br>
+            Please note, we require that completed bookings are paid within 14 days.
+        </p>
+    </div>
+
+    <button class="accordion">Can I cancel my booking?</button>
+    <div class="panel">
+        <p>
+            Your booking can be cancelled any time before the start time.<br>
+            Please be aware that once the start time has passed, you will be charged for your booking.
+        </p>
+    </div>
+
+    <button class="accordion">Can I extend my booking?</button>
+    <div class="panel">
+        <p>
+            Absolutely! As long as the car has not been booked by another Vroom Car Share customer, you can extend your
+            booking either before it begins, or while it is in progress.<br>
+            If the system will not allow you to extend, this likely means your car has another booking, and we ask that
+            you ensure it is returned on time to avoid inconveniencing your fellow customer.
+        </p>
+    </div>
+
+    <button class="accordion">Will the cost adjust to the cheaper daily rate if I extend my booking and the hourly cost
+        works out greater?</button>
+    <div class="panel">
+        <p>
+            Yes! You will always be charged the lower rate, therefore if you extend your booking so that the hourly rate
+            exceeds the daily rate, you will be charged the daily rate as a maximum.<br>
+            For more information regarding booking costs, please visit the Pricing page.
+        </p>
+    </div>
+
+    <button class="accordion">Can I see a history of my bookings?</button>
+    <div class="panel">
+        <p>
+            Log in and visit the My Bookings page under the My Account menu to access your full booking history.
+            Here you can view, extend or pay any current or upcoming bookings, cancel future bookings, and pay any
+            outstanding bookings.<br>
+            Your full booking history remains available to you, should you need to review any of your past bookings.
+        </p>
+    </div>
+
+    <button class="accordion">What if I am involved in an accident?</button>
+    <div class="panel">
+        <p>
+            Don’t panic. Call 000 first if necessary. Then call us straight away on 03 9123 4567 and we’ll handle the
+            insurance.<br>
+            Don’t forget to get the following details from all involved third parties:
+            <ul>
+                <li>Contact number</li>
+                <li>Driver licence details</li>
+                <li>Details of the incident and where it occurred</li>
+                <li>Registration details</li>
+            </ul>
+        </p>
+    </div>
+
+    <button class="accordion">Where do you operate?</button>
+    <div class="panel">
+        <p>
+            We currently only operate in Melbourne CBD and inner suburbs. We are always adding new pods and vehicles
+            however, and plan to expand to other cities in the future. Stay tuned!
+        </p>
+    </div>
+
+
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].onclick = function () {
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    $(".accordion").removeClass("active");
+                    panel.style.maxHeight = null;
+                } else {
+                    $(".panel").css("max-height", "");
+                    $(".accordion").removeClass("active");
+                    this.classList.toggle("active");
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            }
+        }
+    </script>
+
+{% endblock %}

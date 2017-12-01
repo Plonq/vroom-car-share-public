@@ -1,0 +1,20 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Shaun O'Malley
+    Description: Login form
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'base_narrow.html' %}
+{% block pagetitle %}{% block pageheader %}Login{% endblock %}{% endblock %}
+{% block page-content %}
+
+    <div class="top-spacer">
+        {% load crispy_forms_tags %}
+        <form class="validated-form" method="post" action="{% url 'login' %}">
+            {% crispy form %}
+            <p><a href="{{ url_register }}">Register</a> | <a href="{% url 'password_reset' %}">Forgot password</a></p>
+            <button type="submit" class="btn btn-primary">Login</button>
+            <input type="hidden" name="next" value="{{ next }}" />
+        </form>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,49 @@
+#map {
+    height: 350px;
+    width: 100%;
+}
+
+.booking-details .row {
+    padding: 4px 0;
+}
+
+.booking-details .row:nth-child(odd) {
+    background-color: #006699;
+    font-size: 15px;
+    color:white;
+    font-weight: bold;
+    border-bottom:1px solid lightgray;
+}
+
+.booking-details .row:nth-child(even) {
+    background-color: #f2f2f2;
+    color: #6b6b6b;
+    border-bottom:1px solid lightgray;
+}
+
+.booking-details .row:last-of-type {
+    border-bottom: 0;
+}
+
+.actions-heading {
+    font-size: 13pt;
+}
+
+.actions .row {
+    padding: 10px 0;
+}
+
+.actions a {
+    margin: 0 15px;
+}
+
+/* Override parent */
+.container {
+    padding-bottom: 0;
+}
+
+/* Prominent cancelled status */
+.cancelled {
+    font-weight: bold;
+    color: #c10000;
+}

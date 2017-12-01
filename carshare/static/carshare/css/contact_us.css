@@ -1,0 +1,56 @@
+textarea#id_message {
+    height: 15em;
+}
+
+.forms {
+    padding:15px;
+    margin-top:20px;
+}
+
+.contact-wrapper > .row {
+    background-color:#f7f8f9;
+}
+
+.contact-wrapper h4 {
+    margin-bottom: 35px;
+}
+
+.icon {
+    font-size: 40px;
+    float: left;
+    color: #d1d1d1;
+}
+
+.mobileicon {
+    color: #d1d1d1;
+    font-size:35px;
+    padding-bottom:10px;
+    padding-top: 20px;
+}
+
+.contactinfo div:first-of-type{
+    margin-top: 20px;
+}
+
+.contactinfo div {
+    margin-bottom: 20px;
+    padding: 0px;
+}
+
+
+input.form-control, textarea.form-control, select.form-control {
+    border-radius: 6px;
+}
+
+.oneline {
+    float: right;
+    width:180px;
+    text-align: right;
+    margin-top: 10px;
+}
+
+.address {
+    float: right;
+    width:180px;
+    text-align: right;
+}

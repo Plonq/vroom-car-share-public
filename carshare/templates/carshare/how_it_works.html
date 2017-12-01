@@ -1,0 +1,89 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Huon Imberger
+    Description: Describes how Vroom works
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'base_narrow.html' %}
+{% load static %}
+{% block pagetitle %}{% block pageheader %}How it works{% endblock %}{% endblock %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/how_it_works.css' %}">
+{% endblock header %}
+{% block page-content %}
+
+    <div class="row">
+        <div class="col-sm-12 intro">
+            <h2>Four simple steps and Vroom will have you on the road in no time.</h2>
+        </div>
+    </div>
+
+    <div class="row steps">
+        <div class="col-sm-9">
+            <h3>Step 1 - Register</h3>
+            <p>Begin by registering with us for free. We’ll request some basic information to confirm your eligibility,
+                and then send out your VroomCard for delivery on the next business day.</p>
+        </div>
+            <div class="col-sm-3">
+            <img src="{% static 'carshare/images/1_Register.png' %}" class="stepimage">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <img src="{% static 'carshare/images/double_down.png' %}" class="downarrow">
+        </div>
+    </div>
+
+    <div class="row steps">
+        <div class="col-sm-9">
+            <h3>Step 2 - Make a Booking</h3>
+            <p>Use the interactive map to search for available vehicles in your chosen location. Select the one that’s
+                right for you and make a booking for the time period you need.
+                Your booking is available to view in your profile, and you can cancel any time in advance of the booking
+                start time.</p>
+        </div>
+            <div class="col-sm-3">
+            <img src="{% static 'carshare/images/2_Book.png' %}" class="stepimage">
+        </div>
+    </div>
+
+        <div class="row">
+        <div class="col-sm-12 text-center">
+            <img src="{% static 'carshare/images/double_down.png' %}" class="downarrow">
+        </div>
+    </div>
+
+    <div class="row steps">
+        <div class="col-sm-9">
+            <h3>Step 3 - Collect Vehicle</h3>
+            <p>Simply use your VroomCard to unlock your booked vehicle. The smart reader links your card with your
+                booking, allowing you access to the vehicle. The keys are inside and you’re on your way!</p>
+        </div>
+            <div class="col-sm-3">
+            <img src="{% static 'carshare/images/3_Collect.png' %}" class="stepimage">
+        </div>
+    </div>
+
+        <div class="row">
+        <div class="col-sm-12 text-center">
+            <img src="{% static 'carshare/images/double_down.png' %}" class="downarrow">
+        </div>
+    </div>
+
+    <div class="row steps">
+        <div class="col-sm-9">
+            <h3>Step 4 - Return and Pay</h3>
+            <p>Return the car to its home and end your booking. Your nominated credit card will be charged, and you will
+                receive a tax invoice by email.
+                You can view your full booking history, as well as any upcoming bookings, in your profile.</p>
+        </div>
+            <div class="col-sm-3">
+            <img src="{% static 'carshare/images/4_Return.png' %}" class="stepimage">
+        </div>
+    </div>
+
+    <h4 class="text-center top-spacer">If you have any further questions about the Vroom service please visit our helpful
+        <a href="{% url 'carshare:faq' %}">FAQs page</a>.</h4>
+
+
+{% endblock %}

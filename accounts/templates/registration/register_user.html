@@ -1,0 +1,39 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Steven Thompson
+    Description: Registration step 1 - user details
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'registration/register_base.html' %}
+
+{% block helptext %}
+    <p>Welcome to Vroom Car Share. Please provide the requested information on the following pages, and you'll
+        be on
+        your way.</p>
+    <p>These items will be required to complete this form:</p>
+    <ol>
+        <li>A valid credit card linked to your preferred membership address.</li>
+        <li>You must be 18 years or older, some exceptions apply</li>
+    </ol>
+{% endblock %}
+
+{% block regform %}
+    {% load crispy_forms_tags %}
+    <form class="validated-form" id="msform" method="post" action="">
+        <!-- progressbar -->
+        <ul id="progressbar">
+            <li class="active text-center">Account Information</li>
+            <li class="text-center">Address</li>
+            <li class="text-center">Payment Info</li>
+        </ul>
+        <!-- fieldsets -->
+        <fieldset>
+            <h2 class="fs-title text-center">Account Information</h2>
+            <h3 class="fs-subtitle text-center">Tell us a bit about you</h3>
+            {% crispy user_form %}
+            <div class="controls text-center">
+                <a class="btn btn-link" href="{% url 'register_cancel' %}">Cancel</a>
+                <input type="submit" name="next" class="btn btn-primary" value="Next"/>
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}

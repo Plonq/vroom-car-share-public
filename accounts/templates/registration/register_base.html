@@ -1,0 +1,34 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Steven Thompson
+    Description: Base template for account registration pages
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'base_narrow.html' %}
+{% load static %}
+
+{% block pagetitle %}{% block pageheader %}Register{% endblock %}{% endblock %}
+
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/register_base.css' %}">
+{% endblock %}
+
+{% block page-content %}
+
+    <!-- MultiStep Form -->
+    <div>
+        <div class="row register_form top-spacer">
+
+            {% block helptext %}{% endblock %}
+
+            <div class="col-md-12">
+                {% block regform %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js'></script>
+{% endblock %}

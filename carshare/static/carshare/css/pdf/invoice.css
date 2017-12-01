@@ -1,0 +1,68 @@
+* {
+    font-family: "Open Sans", sans-serif;
+}
+
+p {
+    padding: 0px;
+    margin: 0px;
+}
+
+a {
+    color: black;
+}
+
+.header p {
+    font-weight: lighter;
+    font-size: 24pt;
+    color: #3399cc;
+    Text-Transform: uppercase;
+}
+
+#logo img {
+    width: 250px;
+    height: 100px;
+    margin-top: 30px;
+    margin-bottom: 60px;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid black;
+    margin: 1em 0;
+    padding: 0;
+}
+
+.header {
+    margin-top: 50px;
+    font-weight: bold;
+    font-size: 16px;
+    padding-top: 2px;
+    padding-bottom: 8px;
+}
+
+.data {
+    background-color: #f0f0f0;
+    margin-bottom: 40px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    vertical-align: middle;
+}
+
+.companyname {
+    font-weight: bold;
+    color: #3399cc;
+}
+
+.companycontact, .companyaddress {
+    margin-top: 70px;
+}
+
+.companyaddress {
+    text-align: right;
+}
+
+.cost {
+    text-align: right;
+}

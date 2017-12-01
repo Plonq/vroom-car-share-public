@@ -1,0 +1,356 @@
+/* DOCUMENT INFORMATION
+	- Document: Carshare Theme
+	- Version:  0.1
+	- Author:
+*/
+
+/* ==== GLOBAL=== */
+* {
+    font-family: "Open Sans", sans-serif;
+}
+
+.container {
+    max-width: 710px;
+}
+
+.bottom-padding {
+    padding-bottom: 50px;
+}
+
+.notflush {
+    padding-bottom: 15px;
+}
+
+/* Page title banner */
+.page-heading {
+    background-color: #006699;
+}
+
+.page-heading > h1 {
+    margin: 0;
+    padding: 10px 0;
+    color: white;
+    font-size: 24pt;
+}
+
+.bottom-spacer {
+    margin-bottom: 15px;
+}
+
+.top-spacer {
+    margin-top: 25px;
+}
+
+.col-centered {
+    float: none;
+    margin: 0 auto;
+}
+
+#logo {
+    width: 195px;
+    height: 80px;
+    margin-top: 10px;
+
+}
+
+.nav.navbar-nav {
+    margin-top: 10px;
+}
+
+.navbar-brand {
+    line-height: 150px;
+    height: 100px;
+    padding-top: 0;
+}
+
+.navbar {
+    border: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+}
+
+.navbar li {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Global message alert */
+.messages .alert {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.messages .row:last-child {
+    margin-bottom: 10px;
+}
+
+/*
+ * Crispy-forms tweaks
+ */
+.asteriskField {
+    color: red;
+}
+
+.asteriskField::before {
+    content: " "
+}
+
+/* Align buttons to the right */
+.buttons-right {
+    text-align: right;
+}
+
+/* Make the date picker square on the right */
+.input-group-addon:last-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* Top Navbar */
+/*ul.nav.navbar-nav li a {*/
+    /*color: black;*/
+/*}*/
+
+ul.nav.navbar-nav li a:hover {
+    color: #3399cc;
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    background: none;
+    color: #3399cc;
+}
+
+.navbar-nav li a {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.navbar-toggle {
+    margin-top: 35px;
+}
+
+.mobile_header {
+    width: 250px;
+    margin: auto;
+    height: 100px;
+}
+
+/* Floating Auth Menu */
+#floating_menu_wrapper {
+    /* This ensures a narrow floating auth doesn't mess up floats */
+    min-width: 400px;
+    height: 35px;
+    float: right;
+}
+#floating_auth {
+    background-color: #3399cc;
+    height: 35px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    float: right;
+    padding: 4px 5px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+#floating_auth .left-link a,
+#floating_auth .right-link a,
+#floating_auth .dropdown > a {
+    color: white;
+}
+
+#floating_auth div {
+    display: inline-block;
+    padding: 1px 10px;
+}
+
+#floating_auth .left-link {
+    border-right: 1px solid white;
+}
+
+#floating_auth .auth-divider {
+    height: 22px;
+}
+
+#floating_auth a:hover {
+    text-decoration: none;
+}
+
+/* Floating current booking */
+#current-booking {
+    background-color: #289738;
+    height: 35px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    float: right;
+    padding: 5px 15px;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    margin-right: 10px;
+}
+
+#current-booking a {
+    color: white;
+}
+
+#current-booking a:hover {
+    text-decoration: none;
+}
+
+.current-booking-mobile {
+    background-color: #289738;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 8px 0;
+}
+
+.current-booking-mobile a {
+    color: white;
+}
+
+.current-booking-mobile a:hover {
+    text-decoration: none;
+}
+
+/* Website Footer */
+.top-buffer {
+    margin-top: 25px;
+}
+
+.footer {
+    text-align: center;
+}
+
+.footer a,
+.footer p {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.footer a:hover {
+    color: #33ccff;
+    text-decoration: none;
+}
+
+.website-footer-container {
+    width: 650px;
+    margin: auto;
+}
+
+.social-icons img {
+    width: 78px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#copyright p {
+    font-size: 18px;
+}
+
+.blue_section {
+    background-color: #4cc1f6;
+    color: white;
+    padding:20px;
+}
+
+.blue_section h2 {
+    font-weight:bold;
+}
+
+.blue_section p {
+    font-size:18px;
+}
+
+.messages {
+    position: fixed;
+    top:0;
+    z-index: 99999999;
+}
+
+/* Animate loading icon */
+.loading-icon {
+    -webkit-animation-name: spin;
+    -webkit-animation-duration: 1000ms;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-name: spin;
+    -moz-animation-duration: 1000ms;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: linear;
+    animation-name: spin;
+    animation-duration: 1000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@-moz-keyframes spin {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(359deg); }
+}
+
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(359deg); }
+}
+
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(359deg);
+    }
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 400px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 400px;
+    background-color: #006699;
+}
+
+/* Media Queries
+--------------------------------------------------- */
+
+
+/* Small Devices - This is where the mobile menu activates*/
+@media only screen and (max-width: 767px) {
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        /* Set the fixed height of the footer here */
+        height: 530px;
+        background-color: #006699;
+    }
+
+    body {
+        /* Margin bottom by footer height */
+        margin-bottom: 530px;
+    }
+
+}
+
+@media only screen and (max-width: 350px) {
+    /* Reduce size of social icons for tiny screens */
+    .social-icons img {
+        width: 56px;
+    }
+}

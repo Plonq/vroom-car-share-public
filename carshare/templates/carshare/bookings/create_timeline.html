@@ -1,0 +1,176 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Steven Thompson, Huon Imberger
+    Description: Create Booking timeline view showing car availability
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'base_narrow.html' %}
+{% load static %}
+{% block pagetitle %}{% block pageheader %}New Booking for {{ vehicle.name }}{% endblock %}{% endblock %}
+
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/bookings/create_extend.css' %}">
+    <link href="{% static 'css/datetimepicker.css' %}" type="text/css" media="all" rel="stylesheet">
+    <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
+{% endblock %}
+
+{% block page-content %}
+
+    <div class="row top-spacer">
+        <!-- Map and accompanying booking info -->
+        <div class="col-sm-12 bottom-spacer">
+            <div class="row">
+                <div class="col-xs-12" id="map"></div>
+            </div>
+            <div class="booking-info">
+                <div class="row text-center">
+                    <strong>Vehicle Information</strong>
+                </div>
+                <div class="row coloured-odd">
+                    <div class="col-xs-3">
+                        <strong>Name</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ vehicle.name }}</span>
+                    </div>
+                </div>
+                <div class="row coloured-even">
+                    <div class="col-xs-3">
+                        <strong>Make</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ vehicle.make }}</span>
+                    </div>
+                </div>
+                <div class="row coloured-odd">
+                    <div class="col-xs-3">
+                        <strong>Model</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ vehicle.model }}</span>
+                    </div>
+                </div>
+                <div class="row coloured-even">
+                    <div class="col-xs-3">
+                        <strong>Type</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ vehicle.type.description }}</span>
+                    </div>
+                </div>
+                <div class="row coloured-odd">
+                    <div class="col-xs-3">
+                        <strong>Location</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ vehicle.pod.description }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="text-center">
+            <h3>Choose the Starting Time</h3>
+
+            <div class="center-block timeline-datepicker">
+                <form class="validated-form" method="get">
+                    <div id="div_id_timeline_date">
+                        <div class="controls">
+                            <div id="id_timeline_date" class="input-group date">
+                                <input id="id_timeline_date" name="timeline_date" value="{{ date.day }}/{{ date.month }}/{{ date.year }}" readonly="" class="datepicker datewidget form-control" placeholder="Date" required="" aria-invalid="false" type="text">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="timeline-wrapper">
+                <div class="timeline">
+                    {% for hour, avail in hours.items %}
+                        {% if avail == 'available' %}
+                            <a href="{% url 'carshare:booking_create_final' vehicle.id date.year date.month date.day hour %}"><div class="{{ avail }}">{{ hour|stringformat:"02d:00" }}</div></a>
+                        {% elif avail == 'unavailable' or 'booked_by_user' %}
+                            <div class="{{ avail }}">{{ hour|stringformat:"02d:00" }}</div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row text-center bottom-spacer">
+        <div class="timeline-legend">
+            <div class="available">Available</div>
+            <div class="unavailable">Unavailable</div>
+            <div class="booked_by_user">Your booking</div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="text-center">
+            <a href="{% url 'carshare:find_a_car' %}" class="btn btn-default">Back to Map</a>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        // Manually set up datetimepicker
+        $("#id_timeline_date").datetimepicker({
+            format: 'dd/mm/yyyy',
+            startDate: '{{ today.isoformat }}',
+            startView: 2,
+            minView: 2,
+            autoclose: true,
+            clearBtn: false
+        })
+        // When datepicker changed, load page with select date
+        .change(function () {
+            var val = $("#id_timeline_date").find("input").val();
+            var date_arr = val.split('/');
+            var year = date_arr[2];
+            var month = date_arr[1];
+            var day = date_arr[0];
+            window.location.href = "{% url 'carshare:booking_create' vehicle.id %}"+year+'/'+month+'/'+day;
+        });
+    </script>
+    <script>
+        function initMap() {
+            var styles = {
+                default: null,
+                hide: [
+                    {
+                        featureType: 'poi',
+                        stylers: [{visibility: 'off'}]
+                    },
+                    {
+                        featureType: 'transit',
+                        elementType: 'labels.icon',
+                        stylers: [{visibility: 'off'}]
+                    },
+                ]
+            };
+            var vehicle = {
+                lat: {{ vehicle.pod.latitude }},
+                lng: {{ vehicle.pod.longitude }}
+            };
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 16,
+                center: vehicle,
+                disableDefaultUI: true
+            });
+            map.setOptions({styles: styles['hide']});
+            var marker = new google.maps.Marker({
+                position: vehicle,
+                map: map,
+                icon: "{% static "carshare/images/Geo_icon.png" %}"
+            });
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxp8sbrSQCvnGpZedH-H7uND4GnIkwyQo&callback=initMap"></script>
+{% endblock %}

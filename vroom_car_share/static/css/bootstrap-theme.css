@@ -1,0 +1,31 @@
+/* inputs/buttons */
+input.form-control,
+textarea.form-control,
+select.form-control {
+    border-radius: 0;
+    height: 40px;
+}
+
+.btn {
+    padding: 10px;
+    border-radius: 25px;
+    min-width:70px;
+}
+
+.btn-primary {
+    background: #429bc3;
+    border: 0 none;
+}
+
+/* Alerts */
+.alert-info {
+    color: #60339a;
+    background-color: #ebe1ff;
+    border-color: #d8c8ff;
+}
+
+.dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
+    color: #3399cc;
+    background-color: inherit;
+    font-weight: bold;
+}

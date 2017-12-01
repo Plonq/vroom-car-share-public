@@ -1,0 +1,12 @@
+language: python
+python:
+- '3.6'
+script: python manage.py test
+deploy:
+  provider: heroku
+  api_key:
+    secure: BydMbxVmreB/9V5ImZSHQLB0VIqEBUxsJyX9PYMjRexxV6eXb2SfJethrmMiahqH/K8r2vAOSLnqnW61l4ARW4jvc3BKOZZfc4xZzJK9HnP8GfgY6cYekOtO1lpcX41DQ+K465owThm6uo9Qb4BOB6ZiCDoC4ARd/qbCU7I6Fc9q18CqVcklnWXaAHlNCpbmm9CQB5tUw0gku0ME6R5ZFFcJ6Gw8PuJ6RXA9qmWn+6mjWkLzqHbiPOIEY+DrJUQJecx+ZM+J2Wl+ZVlNnxJfFumTZE9IJvTyhZ2OzGf5dOjNThp0lKmQqUf4DYWwm/bqbuhPxCjw+/FfWwmgQK8xXrdoBEdGu9Osa7RHKkKISlAy2P2KvtqFBlegA1wmYw6j24+eJ/qryaT2OB3MHKIE5oMA7QjBxm/1770+fGeMO4ELSlTsNjntGMAglA9UIxVi0m8gOm0eJkoxPwq9ioHE5/ekKNGwDnb68/KmzbAmxiumWogdpO+8iIAQcwA8X9aJmhgbEQRzhGqmLlBXD1e5Gy2/JepuxM8WzU8MRA7yDvBvT5YvUna/6GT8diR0a5nVgsV+YlpTFBPoJ/BTiy6B3zrqCGFb5sr/z0rgOyuhPJh7KZwkpmR29/OQMQqpBcOAJypuIjbUQfimzfKbgJ0N/FBewxHwpewmi8urWlYURO8=
+  app: vroom-car-share
+  on:
+    repo: Plonq/vroom-car-share
+  run: python manage.py migrate

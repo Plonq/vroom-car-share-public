@@ -1,0 +1,394 @@
+.container-fluid {
+    padding-bottom: 0;
+}
+
+#Booking_Container {
+    position: absolute;
+    width: 250px;
+    height: 300px;
+    background-color: #006699;
+    top: 50%;
+    margin-top: -150px;
+    right: 5%;
+    z-index: 999;
+
+    border-radius: 25px;
+    color: white;
+
+}
+
+#booking {
+    position: relative;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#booking::before {
+    content: '-- ';
+}
+
+#booking::after {
+    content: ' --';
+}
+
+div#pod_description {
+    margin-top: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+button#booking_button {
+    bottom: 15px;
+    position: absolute;
+    left: 50%;
+    width: 100px;
+    margin-left: -50px;
+}
+
+#close_map_popup {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}
+
+#close_map_popup:hover {
+    color: #4cc1f6;
+}
+
+#mapsearch {
+    position: absolute;
+    top: 50%;
+    margin-top: -100px;
+    left: 5%;
+    z-index: 999;
+    width: 300px;
+    height: 200px;
+    background-color: #006699;
+    border-radius: 25px;
+    color: white;
+}
+
+#map_contain {
+    width: 100%;
+    height: 700px;
+    position: relative;
+}
+
+#map {
+    height: 700px;
+    width: 100%;
+}
+
+#description {
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+}
+
+#infowindow-content .title {
+    font-weight: bold;
+}
+
+#infowindow-content {
+    display: none;
+}
+
+#map #infowindow-content {
+    display: inline;
+}
+
+.pac-card {
+    margin: 10px 10px 0 0;
+    border-radius: 2px 0 0 2px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    background-color: #fff;
+    font-family: Roboto;
+}
+
+#pac-container {
+    padding-bottom: 12px;
+    margin-right: 12px;
+}
+
+.pac-controls {
+    display: inline-block;
+    padding: 5px 11px;
+}
+
+.pac-controls label {
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: 300;
+}
+
+#pac-input {
+    background-color: #fff;
+    /*font-family: Roboto;*/
+    font-size: 15px;
+    font-weight: 300;
+    margin: auto;
+    padding: 0 30px 0 13px;
+    text-overflow: ellipsis;
+    width: 265px;
+    color: black;
+}
+
+#pac-input:focus {
+    border-color: #4d90fe;
+}
+
+#title {
+    color: #fff;
+    background-color: #4d90fe;
+    font-size: 25px;
+    font-weight: 500;
+    padding: 6px 12px;
+}
+
+#target {
+    width: 345px;
+}
+
+.findcartop {
+    width: 100%;
+    background-color: #006699;
+    color: white;
+    margin: 0px;
+    padding: 0px;
+    height: 60px;
+}
+
+.findcartop h1 {
+    margin: 0px;
+    padding-top: 10px;
+}
+
+#mobile_search {
+    background-color: #006699;
+    color: white;
+}
+
+/* Map Filter */
+
+#filter_container {
+    position: absolute;
+    top:20px;
+    left:5%;
+    z-index: 999999;
+    user-select: none;
+    cursor: pointer;
+}
+
+.expand_main_wrapper {
+    max-width: 281px !important;
+    transition:0.5s max-width linear;
+}
+
+.main_wrapper {
+    overflow: hidden;
+    max-width: 0px;
+    transition:0.5s max-width linear;
+    float: left;
+
+}
+
+#left-button {
+    float: left;
+    padding: 8px;
+    background-color: #006699;
+    color: white;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+#reset {
+    padding: 8px;
+    float: left;
+    color: lightgray;
+    background-color: #006699;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.filter_wrapper{
+    width:400px;
+}
+
+.options {
+    background-color: #006699;
+    color:white;
+    float: left;
+    padding: 8px;
+}
+
+.options:hover {
+    color:#4cc1f6;
+}
+
+.selected {
+    color:#4cc1f6;
+    font-weight: bold;
+}
+
+#mobile-filter {
+    margin-bottom:0px;
+}
+
+#mobile-filter li {
+    display: inline-block;
+    padding: 8px;
+}
+
+.filter-mobile-header {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size:20px;
+}
+
+#filter-mobile-wrapper {
+    background-color: #006699;
+    padding-bottom:10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+
+/* End Map Filter */
+
+
+
+@media only screen and (min-height: 1260px) {
+
+    #map_contain {
+        width: 100%;
+        height: 900px;
+        position: relative;
+    }
+
+    #map {
+        height: 900px;
+        width: 100%;
+    }
+
+}
+
+/* Small Devices - This is where the mobile menu activates*/
+@media only screen and (max-width: 767px) {
+
+    #mobile_search {
+        position: relative;
+    }
+
+    #pac-input-mobile {
+        margin: auto;
+        padding-right: 33px;
+        text-overflow: ellipsis;
+    }
+
+    #findcar {
+        width: 100%;
+        margin-bottom: 20px;
+        margin-top:10px;
+    }
+
+    #map_contain {
+        width: 100%;
+        height: 450px;
+        position: relative;
+    }
+
+    #map {
+        height: 450px;
+        width: 100%;
+    }
+
+    #Booking_Container_mobile {
+        width: 100%;
+        height: 275px;
+        background-color: #4cc1f5;
+        color: white;
+        padding-top: 30px;
+    }
+
+    #booking_container_mobile h3 {
+        font-weight: bold;
+        font-size: 30px;
+    }
+
+    #location_mobile,
+    #pricing_mobile {
+        font-weight: bold;
+        font-size: 20px;
+        margin-top: 10px;
+    }
+
+    #booking_button_mobile {
+        width: 90%;
+        margin-top: 20px;
+    }
+
+    .reset-button {
+        margin-bottom: 20px;
+        margin-top: 5px;
+        width: 90%;
+        color: #00466c;
+    }
+
+    div#Booking_Container_mobile {
+        padding: 1px;
+    }
+
+    div#pod_description {
+        margin-top: 15px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    #booking_button {
+        bottom: 15px;
+        position: absolute;
+        left: 50%;
+        margin-left: -43px;
+    }
+
+    #close_map_popup {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+    }
+
+    #close_map_popup:hover {
+        color: #4cc1f6;
+    }
+
+}
+
+/* Search input clear button */
+.btn-group {
+    display: block;
+}
+#searchclear {
+    position: absolute;
+    right: 26px;
+    top: 0;
+    bottom: 0;
+    height: 16px;
+    margin: auto;
+    font-size: 16px;
+    cursor: pointer;
+    color: #a8a8a8;
+}
+#searchclear-mobile {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    bottom: 0;
+    height: 18px;
+    margin: auto;
+    font-size: 20px;
+    cursor: pointer;
+    color: #a8a8a8;
+}

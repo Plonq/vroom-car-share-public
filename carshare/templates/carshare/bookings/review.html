@@ -1,0 +1,103 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Shaun O'Malley
+    Description: Review booking before submitting
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'base_narrow.html' %}
+{% load static %}
+{% block pagetitle %}{% block pageheader %}Review Booking{% endblock %}{% endblock %}
+
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/bookings/detail.css' %}">
+{% endblock %}
+
+{% block page-content %}
+    <div class="top-spacer">
+        <div>
+            <div class="row">
+                <div class="col-xs-12" id="map"></div>
+            </div>
+        </div>
+        <div class="booking-details">
+            <div class="row text-center">
+                <div class="col-lg-12  col-sm-12 col-xs-12">Name</div>
+            </div>
+            <div class="row text-center">
+                <div class="col-lg-12  col-sm-12 col-xs-12">{{ booking.vehicle.name }}</div>
+            </div>
+
+            <div class="row text-center">
+                <div class="col-lg-6  col-sm-6 col-xs-6">Make</div>
+                <div class="col-lg-6  col-sm-6 col-xs-6">Model</div>
+            </div>
+            <div class="row text-center">
+                <div class="col-lg-6  col-sm-6 col-xs-6">{{ booking.vehicle.make }}</div>
+                <div class="col-lg-6  col-sm-6 col-xs-6">{{ booking.vehicle.model }}</div>
+            </div>
+            <div class="row text-center">
+                <div class="col-lg-6 col-sm-6 col-xs-6">From</div>
+                <div class="col-lg-6 col-sm-6 col-xs-6">To</div>
+            </div>
+            <div class="row text-center">
+                <div class="col-lg-6  col-sm-6 col-xs-6">{{ booking.schedule_start }}</div>
+                <div class="col-lg-6  col-sm-6 col-xs-6">{{ booking.schedule_end }}</div>
+            </div>
+            <div class="row text-center">
+                <div class="col-lg-6  col-sm-6 col-xs-6">Location</div>
+                <div class="col-lg-6 col-sm-6 col-xs-6">Cost</div>
+            </div>
+            <div class="row text-center">
+                <div class="col-lg-6 col-sm-6 col-xs-6"> {{ booking.vehicle.pod.description }}</div>
+                <div class="col-lg-6  col-sm-6 col-xs-6">${{ booking.calculate_cost|stringformat:".2f" }}</div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <div class="row text-center">
+                <div class="col-xs-12">
+                    <a class="btn btn-default" href="{% url 'carshare:booking_create_final_length' booking.vehicle.id datetime.year datetime.month datetime.day datetime.hour length %}">Back</a>
+                    <a class="btn btn-success load-after-click" href="{% url 'carshare:booking_confirm' %}">Confirm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function initMap() {
+            var styles = {
+                default: null,
+                hide: [
+                    {
+                        featureType: 'poi',
+                        stylers: [{visibility: 'off'}]
+                    },
+                    {
+                        featureType: 'transit',
+                        elementType: 'labels.icon',
+                        stylers: [{visibility: 'off'}]
+                    },
+                ]
+            };
+            var vehicle = {
+                lat: {{ booking.vehicle.pod.latitude }},
+                lng: {{ booking.vehicle.pod.longitude }}
+            };
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 16,
+                center: vehicle,
+                disableDefaultUI: true
+            });
+            map.setOptions({styles: styles['hide']});
+            var marker = new google.maps.Marker({
+                position: vehicle,
+                map: map,
+                icon: "{% static "carshare/images/Geo_icon.png" %}"
+            });
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxp8sbrSQCvnGpZedH-H7uND4GnIkwyQo&callback=initMap"></script>
+{% endblock %}

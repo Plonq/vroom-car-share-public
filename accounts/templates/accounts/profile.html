@@ -1,0 +1,96 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Shaun O'Malley
+    Description: User's profile page
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'base_narrow.html' %}
+{% load static %}
+{% block pagetitle %}{% block pageheader %}Profile{% endblock %}{% endblock %}
+
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/profile.css' %}">
+{% endblock %}
+
+{% block page-content %}
+
+    <div class="row top-spacer">
+        <!-- Actions -->
+        <div class="col-sm-4 col-sm-push-8">
+            <div class="profile-actions">
+                <h4 class="text-center">Actions</h4>
+                <hr>
+                <p><a href="{% url 'edit_profile' %}"><span class="glyphicon glyphicon-edit"></span> Edit Profile</a></p>
+                <p><a href="{% url 'update_email' %}"><span class="glyphicon glyphicon-envelope"></span> Update Email Address</a></p>
+                {% if user.credit_card %}<p><a href="{% url 'update_credit_card' %}"><span class="glyphicon glyphicon-usd"></span> Update Credit Card</a></p>{% endif %}
+                <p><a href="{% url 'password_change' %}"><span class="glyphicon glyphicon-lock"></span> Change Password</a></p>
+                <p><a class="text-danger" href="{% url 'delete_account' %}"><span class="glyphicon glyphicon-remove"></span> Delete Account</a></p>
+            </div>
+        </div>
+        <!-- Information -->
+        <div class="col-sm-8 col-sm-pull-4">
+            <!-- General Information -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <h4>General Information</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <p><strong>Name:</strong></p>
+                </div>
+                <div class="col-sm-6">
+                    <p>{{ user.get_full_name }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <p><strong>Date of birth:</strong></p>
+                </div>
+                <div class="col-sm-6">
+                    <p>{{ user.date_of_birth }}</p>
+                </div>
+            </div>
+            {% if user.address %}
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p><strong>Address:</strong></p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p>{{ user.address }}</p>
+                    </div>
+                </div>
+            {% endif %}
+            <!-- Contact Information -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <h4>Contact Information</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <p><strong>Email:</strong></p>
+                </div>
+                <div class="col-sm-6">
+                    <p>{{ user.email }}</p>
+                </div>
+            </div>
+            {% if user.credit_card %}
+                <!-- Payment Information -->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h4>Payment Information</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p><strong>Credit card number:</strong></p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p>{{ user.credit_card }}</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+

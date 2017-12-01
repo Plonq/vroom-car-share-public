@@ -1,0 +1,16 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Huon Imberger
+    Description: Notification of email verification required for email address update
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'base_narrow.html' %}
+{% block pagetitle %}{% block pageheader %}Update Email{% endblock %}{% endblock %}
+{% block page-content %}
+
+    <div class="text-center top-spacer">
+        <h4>Verification Required</h4>
+        <p>You must verify your new email address. We have sent an email containing a verification link.</p>
+        <p>If you made this change in error, just ignore the email.</p>
+    </div>
+
+{% endblock %}

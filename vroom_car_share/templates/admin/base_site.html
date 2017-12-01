@@ -1,0 +1,11 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Huon Imberger
+    Description: Modifies django-admin base template to implement WYSIWYG editor (for email templates)
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends "admin/base_site.html" %}
+
+{% block extrahead %}
+<script>window.CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/';</script>
+{{ block.super }}
+{% endblock %}

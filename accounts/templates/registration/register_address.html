@@ -1,0 +1,29 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Steven Thompson
+    Description: Registration step 2 - address
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'registration/register_base.html' %}
+
+{% block regform %}
+    {% load crispy_forms_tags %}
+    <form class="validated-form" id="msform" method="post" action="">
+        <!-- progressbar -->
+        <ul id="progressbar">
+            <li class="active text-center">Account Information</li>
+            <li class="active text-center">Address</li>
+            <li class="text-center">Payment Info</li>
+        </ul>
+        <!-- fieldsets -->
+        <fieldset>
+            <h2 class="fs-title text-center">Address</h2>
+            <h3 class="fs-subtitle text-center">Your location to help customise your experience</h3>
+            {% crispy address_form %}
+            <div class="controls text-center">
+                <a class="btn btn-link" href="{% url 'register_cancel' %}">Cancel</a>
+                <a name="previous" class="btn btn-default" href="{% url 'register' %}">Previous</a>
+                <input type="submit" name="next" class="btn btn-primary" value="Next"/>
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}

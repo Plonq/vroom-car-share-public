@@ -1,0 +1,138 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Steven Thompson, Huon Imberger, Shaun O'Malley
+    Description: Home page
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'base.html' %}
+{% load static %}
+{% block pagetitle %}Home{% endblock %}
+{% block header %}
+    <link rel="stylesheet" type="text/css"  href="{% static 'carshare/css/index.css' %}">
+{% endblock header %}
+{% block content %}
+<div class="container-fluid">
+<div class="row">
+
+    <img src="{% static "carshare/images/mobile_banner_2.jpg" %}" alt="..." class="hidden-md hidden-lg hidden-sm mobile_banner">
+
+    <div id="carousel-example-generic" class="carousel slide hidden-xs" data-ride="carousel" data-interval="10000">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+            <div class="item active">
+                <img src="{% static "carshare/images/banner_gor_2.jpg" %}" alt="...">
+                <div class="carousel-caption">
+                    <img src="{% static "carshare/images/icon_car.png" %}" alt="Car icon">
+                    <p>Vroom helps you to find your freedom, enjoying the benefits of having a car without the hassles
+                        of owning one</p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="{% static "carshare/images/banner1.jpg" %}" alt="...">
+                <div class="carousel-caption">
+                    <img src="{% static "carshare/images/icon_clock.png" %}" alt="Clock icon">
+                    <p>Save time with fast and easy booking</p>
+                    <p>and 24/7 availability</p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="{% static "carshare/images/banner_melbourne_2.jpg" %}" alt="...">
+                <div class="carousel-caption">
+                    <img src="{% static "carshare/images/icon_mapmarker.png" %}" alt="Map marker icon">
+                    <p>Unbeatable convenience with an extensive</p>
+                    <p>range of cars and locations</p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="{% static "carshare/images/banner_carlton_gardens_2.jpg" %}" alt="...">
+                <div class="carousel-caption">
+                    <img src="{% static "carshare/images/icon_leaf.png" %}" alt="Leaf icon">
+                    <p>A greener Melbourne with reduced emissions</p>
+                    <p> and less traffic congestion</p>
+                </div>
+            </div>
+            <!-- Add more here -->
+        </div>
+
+        <!-- Controls -->
+        <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    </div></div>
+
+    <div class="container-fluid">
+    <div class="row">
+        <div class="text-center homepage_header">
+            <p>Vroom Car Share is the self-service, all-inclusive, cost effective alternative to car ownership.</p>
+            <p>Try our service today and we promise you'll never look back.</p>
+        </div>
+    </div>
+    </div>
+
+<div class="container homepage-middle">
+    <div class="row">
+
+          <div class="col-sm-12 col-md-4">
+        <div class="thumbnail">
+          <img src="{% static "carshare/images/info2_cars.jpg" %}" alt="Cars">
+          <div class="caption">
+            <h3>A range of cars to suit any occasion.</h3>
+            <p>Need a compact car for a quick zip around the city? A little more room to do your
+                shopping? A van or ute to help you move? Or perhaps something sportier for that next road trip or
+                camping expedition?
+            </p>
+            <p>Whatever your need, we’ve got you covered.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-4">
+        <div class="thumbnail">
+          <img src="{% static "carshare/images/info1_gocart.jpg" %}" alt="Boy on go cart">
+          <div class="caption">
+            <h3>Competitive pricing means you’re always a winner.</h3>
+            <p>Free to join, and with no annual fees, you simply book as and when you need to get on the road.</p>
+              <p>Hourly or daily rates include all on-road costs such as fuel, registration, insurance, cleaning and
+                  servicing. Hourly rates include unlimited kilometres and daily rates include a generous 500
+                  kilometres per booking.
+              </p>
+          </div>
+        </div>
+      </div>
+          <div class="col-sm-12 col-md-4">
+        <div class="thumbnail">
+          <img src="{% static "carshare/images/info3_reserved.jpg" %}" alt="Reserved car spaces">
+          <div class="caption">
+            <h3>You’re never far from a Vroom car.</h3>
+              <p>Our handy car locations are spread across inner Melbourne, each being extremely accessible and easy
+                  to locate.
+              </p>
+              <p>With up to the minute vehicle availability, you can locate a vehicle near you faster than
+                  ordering your next coffee!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+        <div class="row blue_section text-center">
+        <h2>Join Vroom Car Share!</h2>
+            <p>So, what are you waiting for? <a href="{% url 'register' %}">Join</a> today to discover a new world of fast, flexible and cost effective
+           motoring freedom!
+        </p>
+        </div>
+</div>
+{% endblock content %}

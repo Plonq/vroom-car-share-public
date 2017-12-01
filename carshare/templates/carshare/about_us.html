@@ -1,0 +1,121 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Huon Imberger
+    Description: About Us page
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'base_full_width.html' %}
+{% load static %}
+{% block pagetitle %}{% block pageheader %}About Us{% endblock %}{% endblock %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/about_us.css' %}">
+{% endblock header %}
+
+{% block page-content %}
+
+    <div class="text-center">
+        <div class="narrow-content">
+            <div class="row top-spacer">
+                <div class="col-xs-12">
+                    <h2 class="subheading">We Are Vroom Car Share</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>Formed in 2017 by a group of innovative and enthusiastic visionaries, Vroom Care Share aims to
+                        change the way people perceive car ownership. We are ever evolving, adapting and growing our
+                        business to deliver the best possible service to our customers, maximising efficiency and
+                        convenience to save you time and money.</p>
+                </div>
+            </div>
+            <div class="row top-spacer">
+                <div class="col-xs-4 stat">
+                    <div class="stat-value"><span class="countup">{{ num_locations }}</span></div>
+                    <div class="stat-label">Locations</div>
+                </div>
+                <div class="col-xs-4 stat">
+                    <div class="stat-value"><span class="countup">{{ num_vehicles }}</span></div>
+                    <div class="stat-label">Vehicles</div>
+                </div>
+                <div class="col-xs-4 stat">
+                    <div class="stat-value"><span class="countup">{{ num_shares }}</span></div>
+                    <div class="stat-label">Trips</div>
+                </div>
+            </div>
+            <div class="row top-spacer">
+                <div class="col-xs-12 stat">
+                    <div class="stat-value stat-savings">$<span class="countup">{{ estimated_savings }}</span></div>
+                    <div class="stat-label">Estimated Savings</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <img class="full-width-image" src="{% static 'carshare/images/about_sharing.jpg' %}">
+        </div>
+
+        <div class="narrow-content">
+            <div class="row top-spacer">
+                <div class="col-xs-12">
+                    <h2 class="subheading">We Believe in Sharing</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>With a respectful group of fellow Vroom customers, everyone gains from the benefits of sharing a
+                        vehicle rather than owning one. You simply book and use a vehicle when needed, and forego all of
+                        the costs and hassles that come with vehicle ownership. You also have versatility in vehicle
+                        choice depending on your specific need – from a small zippy car for an inner city shopping trip,
+                        to a ute or a van to help you move.<br>
+                        Vroom Car Share also facilitates inexpensive access to a vehicle for those who may not otherwise
+                        be able to afford one.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <img class="full-width-image" src="{% static 'carshare/images/about_environment.jpg' %}">
+        </div>
+
+
+        <div class="narrow-content">
+            <div class="row top-spacer">
+                <div class="col-xs-12">
+                    <h2 class="subheading">We Care About Our Environment</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>Car sharing gets more privately owned cars off the road, reducing traffic congestion, energy
+                        dependency and emissions, and promoting cleaner air. It also reduces wear and tear on our roads
+                        and lessens the need for parking infrastructure, with the long term potential benefits being the
+                        ability to divert resources to the creation of more parklands and urban green spaces.<br>
+                        The indirect benefit to our customers is improved health due to increased walking or cycling to
+                        get around, rather than habitually jumping in the car. Even if it is just that short walk to the
+                        nearest Vroom Car Share pod!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $.fn.digits = function(){
+            return this.each(function(){
+                $(this).text( $(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") );
+            })
+        };
+        $('.countup').each(function () {
+            $(this).prop('Counter',0).animate({
+                Counter: $(this).text()
+            }, {
+                duration: 1000,
+                easing: 'swing',
+                step: function (now) {
+                    $(this).text(Math.ceil(now)).digits();
+                }
+            });
+        });
+    </script>
+{% endblock %}

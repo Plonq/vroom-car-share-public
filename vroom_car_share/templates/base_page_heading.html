@@ -1,0 +1,16 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Huon Imberger
+    Description: Base template that implements a standard page heading
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="text-center page-heading">
+        <h1>{% block pageheader %}{% endblock %}</h1>
+    </div>
+
+    {% block sub-content %}{% endblock %}
+{% endblock %}
+
+

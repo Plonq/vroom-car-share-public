@@ -1,0 +1,22 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Huon Imberger
+    Description: Re-usable table row for booking table
+----------------------------------------------------------------------------------------------------------------------->
+
+<tr class="hidden-xs {{ booking.get_status|lower }}">
+    <td>
+        <a href="{% url 'carshare:booking_detail' booking.id %}" class="btn-sm btn-primary">{{ booking.id }}</a>
+    </td>
+    <td>{{ booking.vehicle }}</td>
+    <td>{{ booking.schedule_start }}</td>
+    <td>{{ booking.schedule_end }}</td>
+    <td>{{ booking.get_status }}</td>
+</tr>
+<tr class="visible-xs {{ booking.get_status|lower }}">
+    <td>
+        <a href="{% url 'carshare:booking_detail' booking.id %}" class="btn-sm btn-primary">{{ booking.id }}</a>
+    </td>
+    <td>{{ booking.vehicle.name }}</td>
+    <td>{{ booking.schedule_start|date:'d M Y' }}</td>
+    <td>{{ booking.get_status }}</td>
+</tr>

@@ -1,0 +1,15 @@
+.profile-actions {
+    border: 2px solid #e2e2e2;
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-bottom: 15px;
+}
+
+.profile-actions a:hover {
+    text-decoration: none;
+}
+
+.profile-actions hr {
+    margin-top: 0;
+    margin-bottom: 10px;
+}

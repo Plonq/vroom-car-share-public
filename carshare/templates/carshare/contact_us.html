@@ -1,0 +1,71 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Huon Imberger
+    Description: Contact details, with contact form
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'base_narrow.html' %}
+{% load static %}
+{% block pagetitle %}{% block pageheader %}Contact Us{% endblock %}{% endblock %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/contact_us.css' %}">
+{% endblock header %}
+{% block page-content %}
+
+    {% with '123 Fake Street, Melbourne 3000, Australia' as address %}
+    {% with 'enquiries@vroomcs.org' as email %}
+    {% with '1-800-123-4564' as phone %}
+
+
+    <h2>Send us a message</h2>
+    <p>We are happy to answer any questions you have!</p>
+
+    <div class="contact-wrapper">
+        <div class="row">
+            <div class="visible-xs top-spacer text-center">
+                <h4><strong>Contact Information</strong></h4>
+                <div>
+                    <span class="glyphicon glyphicon-home center-block mobileicon"></span>
+                    <span>{{ address }}</span>
+                </div>
+                <div>
+                    <span class="glyphicon glyphicon-earphone center-block mobileicon"></span>
+                    <span><a href="tel:{{ phone }}">{{ phone }}</a></span>
+                </div>
+                <div>
+                    <span class="glyphicon glyphicon-envelope center-block mobileicon"></span>
+                    <span><a href="mailto:{{ email }}">{{ email }}</a></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6 forms">
+                <h4 class="text-center"><strong>Message Us!</strong></h4>
+                {% load crispy_forms_tags %}
+                <form class="validated-form" method="post">
+                    {% crispy contact_form %}
+                </form>
+            </div>
+            <div class="col-sm-6 forms contactinfo hidden-xs">
+                <h4 class="text-center"><strong>Contact Information</strong></h4>
+                <div class="col-lg-offset-1 col-lg-10 col-sm-offset-1 col-sm-10">
+                    <span class="glyphicon glyphicon-home icon"></span>
+                    <span class="address">{{ address }}</span>
+                </div>
+                <div class="col-lg-offset-1 col-lg-10 col-sm-offset-1 col-sm-10">
+                    <span class="glyphicon glyphicon-earphone icon"></span>
+                    <span class="oneline"><a href="tel:{{ phone }}">{{ phone }}</a></span>
+                </div>
+                <div class="col-lg-offset-1 col-lg-10 col-sm-offset-1 col-sm-10">
+                    <span class="glyphicon glyphicon-envelope icon"></span>
+                    <span class="oneline"><a href="mailto:{{ email }}">{{ email }}</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endwith %}
+    {% endwith %}
+    {% endwith %}
+
+{% endblock %}

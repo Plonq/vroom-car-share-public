@@ -1,0 +1,38 @@
+.container-fluid {
+    padding-bottom: 50px;
+}
+
+.narrow-content {
+    margin: 0 auto;
+    max-width: 900px;
+}
+
+.notflush {
+    padding-bottom: 60px;
+}
+
+.subheading {
+    margin-bottom: 25px;
+}
+
+.full-width-image {
+    margin-top: 50px;
+    width: 100%;
+}
+
+.stat > .stat-value,
+.stat > .stat-value > span {
+    font-family: "Open Sans Light", sans-serif;
+    font-size: 38pt;
+    color: #555;
+}
+
+.stat > .stat-value.stat-savings,
+.stat > .stat-value.stat-savings > span {
+    font-family: inherit;
+    color: #3399cc;
+}
+
+.stat > .stat-label {
+    text-transform: uppercase;
+}

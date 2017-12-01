@@ -1,0 +1,12 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Huon Imberger
+    Description: Base template for narrow width pages
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'base_page_heading.html' %}
+
+{% block sub-content %}
+    <div class="container bottom-padding">
+        {% block page-content %}{% endblock %}
+    </div>
+{% endblock %}

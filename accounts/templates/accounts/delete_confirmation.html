@@ -1,0 +1,22 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Shaun O'Malley
+    Description: Confirmation page for deleting your account
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'base_narrow.html' %}
+{% block pagetitle %}{% block pageheader %}Delete Account{% endblock %}{% endblock %}
+{% block page-content %}
+
+    <div class="text-center top-spacer">
+        <h4>Are you Sure?</h4>
+        <p>Your account and all related data including booking history and invoices will be permanently deleted, and you
+            will not be able to restore it.</p>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="confirm" value="1">
+            <button type="submit" class="btn btn-danger load-after-click">Delete</button>
+            <a class="btn btn-default" href="{% url 'profile' %}">Cancel</a>
+        </form>
+    </div>
+
+{% endblock %}

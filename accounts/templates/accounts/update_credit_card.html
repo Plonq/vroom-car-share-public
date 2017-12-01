@@ -1,0 +1,20 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Shaun O'Malley
+    Description: Form for updating credit card
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'base_narrow.html' %}
+{% block pagetitle %}{% block pageheader %}Update Credit Card{% endblock %}{% endblock %}
+{% block page-content %}
+
+    <div class="top-spacer">
+        <h4>Enter new credit card details</h4>
+        <br>
+        {% load crispy_forms_tags %}
+        <form class="validated-form" action="" method="post">
+            {% crispy credit_form %}
+            <button type="submit" class="btn btn-primary load-after-click">Update</button>
+            <a class="btn btn-link" href="{% url 'profile' %}">Cancel</a>
+        </form>
+    </div>
+{% endblock %}

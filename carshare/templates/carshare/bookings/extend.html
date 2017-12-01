@@ -1,0 +1,149 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Huon Imberger
+    Description: Form for extending a booking
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'base_narrow.html' %}
+{% load static %}
+{% block pagetitle %}{% block pageheader %}Extend Booking{% endblock %}{% endblock %}
+
+{% block header %}
+    <link rel="stylesheet" type="text/css"  href="{% static 'carshare/css/bookings/create_extend.css' %}">
+{% endblock %}
+
+{% block page-content %}
+    <div class="row top-spacer">
+        <!-- Map and accompanying booking info -->
+        <div class="col-sm-6 bottom-spacer">
+            <div class="row">
+                <div class="col-xs-12" id="map"></div>
+            </div>
+            <div class="booking-info">
+                <div class="row text-center">
+                    <strong>Booking Information</strong>
+                </div>
+                <div class="row coloured-odd">
+                    <div class="col-xs-3">
+                        <strong>Name</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ booking.vehicle.name }}</span>
+                    </div>
+                </div>
+                <div class="row coloured-even">
+                    <div class="col-xs-3">
+                        <strong>Make</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ booking.vehicle.make }}</span>
+                    </div>
+                </div>
+                <div class="row coloured-odd">
+                    <div class="col-xs-3">
+                        <strong>Model</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ booking.vehicle.model }}</span>
+                    </div>
+                </div>
+                <div class="row coloured-even">
+                    <div class="col-xs-3">
+                        <strong>Location</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ booking.vehicle.pod.description }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Booking form -->
+        <div class="col-sm-6">
+            <p>Please select a new end time for your booking.</p>
+            {% load crispy_forms_tags %}
+            <form id="extend-booking-form" class="validated-form" method="post">
+            {% crispy extend_booking_form %}
+            <div class="booking-cost-block">
+                <p><span id="booking-cost-text"></span></p>
+            </div>
+            <div class="buttons-right">
+                <a class="btn btn-default" href="{% url 'carshare:booking_detail' booking.id %}">Cancel</a>
+                <button type="submit" class="btn btn-primary load-after-click">Extend</button>
+            </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        // AJAX for calculating booking cost when start/end is changed
+        var daily_rate = "{{ vehicle.type.daily_rate }}";
+        var hourly_rate = "{{ vehicle.type.hourly_rate }}";
+        var inputs = $('#extend-booking-form input, #extend-booking-form select');
+        inputs.change(function() {
+            // Serialize form
+            data = $('#extend-booking-form').serialize();
+
+            // Rename new_end_* to booking_end_*
+            data = data.replace("new_end_date", "booking_end_date")
+                       .replace("new_end_time", "booking_end_time");
+
+            // Add booking start date to data, since the form only has the new end date
+            data += "&booking_start_date={{ booking.schedule_start|date:'d%2\\Fm%2\\FY' }}&booking_start_time={{ booking.schedule_start|date:'H%3\Ai' }}";
+
+            $.ajax({
+                method: 'POST',
+                url: "{% url 'carshare:ajax_booking_calculate_cost' booking.vehicle.id %}",
+                data: data,
+                success: function (response) {
+                    cost = JSON.parse(response);
+                    var str = cost.days ? cost.days + " day" + (cost.days > 1 ? "s" : "") + " @ ${{ booking.vehicle.type.daily_rate }}" : "";
+                    cost.days && cost.hours ? str += " + " : "";
+                    cost.hours ? str += cost.hours + " hour" + (cost.hours > 1 ? "s" : "") + " @ ${{ booking.vehicle.type.hourly_rate }}" : "";
+                    str += " = <strong>" + cost.total + "</strong>";
+                    $('#booking-cost-text').html(str)
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(JSON.stringify(jqXHR));
+                    console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                }
+            });
+        });
+        // Also calculate on page load
+        $(document).ready(inputs.change());
+    </script>
+    <script>
+        function initMap() {
+            var styles = {
+                default: null,
+                hide: [
+                    {
+                        featureType: 'poi',
+                        stylers: [{visibility: 'off'}]
+                    },
+                    {
+                        featureType: 'transit',
+                        elementType: 'labels.icon',
+                        stylers: [{visibility: 'off'}]
+                    },
+                ]
+            };
+            var vehicle = {
+                lat: {{ booking.vehicle.pod.latitude }},
+                lng: {{ booking.vehicle.pod.longitude }}
+            };
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 16,
+                center: vehicle,
+                disableDefaultUI: true
+            });
+            map.setOptions({styles: styles['hide']});
+            var marker = new google.maps.Marker({
+                position: vehicle,
+                map: map,
+                icon: "{% static "carshare/images/Geo_icon.png" %}"
+            });
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxp8sbrSQCvnGpZedH-H7uND4GnIkwyQo&callback=initMap"></script>
+{% endblock %}

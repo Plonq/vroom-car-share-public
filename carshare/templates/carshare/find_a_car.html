@@ -1,0 +1,536 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Steven Thompson
+    Description: Interactive map for viewing vehicles and initiating booking
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'base_full_width.html' %}
+{% load static %}
+{% block pagetitle %}{% block pageheader %}Find a Car{% endblock %}{% endblock %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/find_a_car.css' %}">
+{% endblock %}
+{% block page-content %}
+
+    <div id="mobile_search"  class="row text-center visible-xs">
+        <div class="col-xs-12">
+            <!-- Mobile map search box -->
+            <div>
+                <h3>Search for an address</h3>
+                <br/>
+                <div class="btn-group">
+                    <input id="pac-input-mobile" class="controls form-control" type="text" placeholder="Enter Address">
+                    <span id="searchclear-mobile" class="glyphicon glyphicon-remove"></span>
+                </div>
+                <button type="submit" class="btn btn-primary" id="findcar" value="Find Car">Search</button>
+
+                <div id="filter-mobile-wrapper" class="col-xs-12">
+                    <div class="col-xs-12 filter-mobile-header">Filter</div>
+                    <div class="col-xs-offset-1 col-xs-9">
+                        <ul id="mobile-filter">
+                            <li onclick="filter_map('All');reset_markers();" class="All selected">All</li>
+                            <li onclick="filter_map('Economy')" class="Economy">Economy</li>
+                            <li onclick="filter_map('Standard')" class="Standard">Standard</li>
+                        </ul>
+
+                        <ul id="mobile-filter">
+                            <li onclick="filter_map('Premium')" class="Premium">Premium</li>
+                            <li onclick="filter_map('Utility')" class="Utility">Utility</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div id="map_contain">
+
+            <!-- Filter overlay website -->
+            <div id="filter_container" class="hidden-xs">
+                <div id="left-button" onclick="filter_map_toggle();">Filter</div>
+                <div class="main_wrapper">
+                    <div class="filter_wrapper">
+                        <div onclick="filter_map('Economy')" class="Economy options">Economy</div>
+                        <div onclick="filter_map('Standard')" class="Standard options">Standard</div>
+                        <div onclick="filter_map('Premium')" class="Premium options">Premium</div>
+                        <div onclick="filter_map('Utility')" class="Utility options">Utility</div>
+                    </div>
+                </div>
+                <div id="reset" onclick="reset_markers()">Reset</div>
+            </div>
+
+
+            <!-- Floating box for car bookings -->
+            <div id="Booking_Container" class="text-center hidden-xs">
+                <div><span class="glyphicon glyphicon-remove" id="close_map_popup" onclick="hide_popup()"></span></div>
+                <h3 id="car_availability"></h3>
+                <div id="booking"></div><!-- the car name, make and model is listed here -->
+                <h4>Location:</h4>
+                <div id="pod_description"></div><!-- pod description listed here -->
+                <h4>Pricing:</h4>
+                <div><strong>Daily: </strong><span class="daily_rate"></span> <strong>Hourly: </strong><span
+                        class="hourly_rate"></span></div>
+
+                <button type="button" class="btn btn-primary" id="booking_button" value="Book Now">Book Now</button>
+            </div>
+
+            <!-- map search box -->
+            <div id="mapsearch" class="text-center hidden-xs">
+                <h3>Find a Vroom car</h3>
+                <br/>
+                <div class="btn-group">
+                    <input id="pac-input" class="controls form-control" type="text" placeholder="Enter Address">
+                    <span id="searchclear" class="glyphicon glyphicon-remove"></span>
+                </div>
+                <br/>
+                <button type="submit" class="btn btn-primary" id="findcar" value="Find Car">Search</button>
+            </div>
+            <div id="map"></div>
+        </div>
+
+        <!-- Mobile box for car bookings -->
+        <div id="Booking_Container_mobile" class="text-center hidden-sm hidden-md hidden-lg">
+            <h3 id="car_availability_mobile"></h3>
+            <div id="booking_mobile"></div>
+            <h4 id="location_mobile">Location:</h4>
+            <div id="pod_description_mobile"></div>
+            <h4 id="pricing_mobile">Pricing:</h4>
+            <div><strong>Daily: </strong><span class="daily_rate"></span> <strong>Hourly: </strong><span
+                    class="hourly_rate"></span></div>
+
+            <button type="button" class="btn btn-primary" id="booking_button_mobile" value="Book Now">Book Now</button>
+            <button type="reset" class="btn btn-link reset-button" onclick="hide_popup_mobile()">
+                Back to Search
+            </button>
+
+        </div>
+        <!-- End mobile bookings -->
+
+    </div>
+
+    <script>
+
+        $("#Booking_Container").hide();
+        //Hide mobile bookings
+        $("#Booking_Container_mobile").hide();
+
+        //Get users location
+        //Add checks if there is no HTML5 and add default starting location
+
+        function initMap() {
+
+            //Commented out for testing uncomment the line below to test geolocation
+            //var user = {lat: crd.latitude, lng: crd.longitude};
+            //Set user location to melbourne CBD
+            var user = {lat: -37.813628, lng: 144.963058}; //comment this line to test geolocation
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 16,
+                center: user,
+                disableDefaultUI: true
+            });
+            map.setOptions({styles: styles['hide']});
+            var marker = new google.maps.Marker({
+                position: user,
+                map: map
+            });
+
+
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    map.setCenter(pos);
+
+
+                    map.setOptions({styles: styles['hide']});
+                    var marker = new google.maps.Marker({
+                        position: pos,
+                        map: map
+                    });
+
+
+                });
+            }
+            ;
+
+            // Add some markers to the map.
+            // Note: The code uses the JavaScript Array.prototype.map() method to
+            // create an array of markers based on a given "locations" array.
+            // The map() method here has nothing to do with the Google Maps API.
+
+            /* custom marker code here */
+            var icons = {
+                unavailable: {
+                    icon: "{% static "carshare/images/Geo_icon_unavailable.png" %}"
+                },
+                available: {
+                    icon: "{% static "carshare/images/Geo_icon.png" %}"
+                }
+            };
+
+            // Define the locations
+            // Type: available or not
+
+            var features = [];
+
+            {% for car in vehicles %}
+                features.push(
+                    {
+                        id: {{ car.id }},
+                        lat: {{ car.pod.latitude }},
+                        lng: {{ car.pod.longitude }},
+                        {% if car.is_available %}
+                            type: 'available',
+                            available: true,
+                        {% else %}
+                            type: 'unavailable',
+                            available: false,
+                        {% endif %}
+                        carname: "{{ car.name }}",
+                        make: "{{ car.make }}",
+                        model: "{{ car.model }}",
+                        pod_description: "{{ car.pod.description }}",
+                        booking_url: "{% url 'carshare:booking_create' car.id %}",
+                        daily_rate: "${{ car.type.daily_rate }}",
+                        hourly_rate: "${{ car.type.hourly_rate }}",
+                        car_type: "{{ car.type.description }}"
+                    }
+                )
+            {% endfor %}
+
+
+            // Place markers on the map
+            window.markers = features.map(function (location, i) {
+                return new google.maps.Marker({
+                    id: location.id,
+                    position: location,
+                    icon: icons[location.type].icon,
+                    carname: location.carname,
+                    make: location.make,
+                    model: location.model,
+                    pod_description: location.pod_description,
+                    availability: location.available,
+                    booking_url: location.booking_url,
+                    daily_rate: location.daily_rate,
+                    hourly_rate: location.hourly_rate,
+                    car_type: location.car_type
+                });
+            });
+
+            /* End custom marker code */
+
+
+            // Add a marker clusterer to manage the markers.
+            window.markerCluster = new MarkerClusterer(map, window.markers,
+                {imagePath: '/static/carshare/images/gmaps_cluster_icon_m'});
+
+
+            //disable all marker animations
+            function stopmarkers() {
+                for (var i in window.markers) {
+                    window.markers[i].setAnimation(null);
+                }
+            }
+
+
+            // Add a click listener to the markers
+            window.markers.forEach(function (pod) {
+
+                pod.addListener('click', function () {
+
+                    stopmarkers();
+
+
+                    // Center the marker when clicked on
+                    map.panTo(pod.getPosition());
+                    pod.setAnimation(google.maps.Animation.BOUNCE);
+                    $("#booking").text(pod.carname + " the " + pod.make + " " + pod.model);
+                    $("#pod_description").text(pod.pod_description);
+                    $(".daily_rate").text(pod.daily_rate);
+                    $(".hourly_rate").text(pod.hourly_rate);
+
+                    //mobile
+                    $("#booking_mobile").text(pod.carname + " the " + pod.make + " " + pod.model);
+                    $("#pod_description_mobile").text(pod.pod_description);
+
+                    if (pod.availability) {
+                        $("#car_availability").text("Car Available");
+                        $("#car_availability_mobile").text("Car Available");
+                        $("#booking_button").text("Book Now");
+                        //$("#booking_button").removeClass("disabled");
+                        $("#booking_button").click(function () {
+                            window.location.href = pod.booking_url
+                        });
+                        $("#booking_button_mobile").text("Book Now");
+                        $("#booking_button_mobile").click(function () {
+                            window.location.href = pod.booking_url
+                        });
+                    }
+                    else {
+                        $("#car_availability").text("Car In Use");
+                        $("#booking_button").text("Book Future");
+                        //$("#booking_button").addClass("disabled");
+                        $("#car_availability_mobile").text("Car In Use");
+                        $("#booking_button_mobile").text("Book Future");
+                        $("#booking_button").click(function () {
+                            window.location.href = pod.booking_url
+                        });
+                        $("#booking_button_mobile").click(function () {
+                            window.location.href = pod.booking_url
+                        });
+                    }
+
+                    $("#Booking_Container").fadeIn("slow");
+                    $("#Booking_Container_mobile").fadeIn("slow");
+                    $("#Booking_Container_mobile").scrollintoview({duration: "normal"});
+
+                });
+
+            });
+
+
+            // new code here: Google places API code here.
+
+            // Create the search box and link it to the UI element.
+            var input = document.getElementById('pac-input');
+            var mobile_search = document.getElementById('pac-input-mobile');
+            var searchBox = [new google.maps.places.SearchBox(input), new google.maps.places.SearchBox(mobile_search)];
+
+            // Bias the SearchBox results towards current map's viewport.
+            map.addListener('bounds_changed', function () {
+                //searchBox.setBounds(map.getBounds());
+                for (i = 0; i < searchBox.length; i++) {
+                    searchBox[i].setBounds(map.getBounds());
+                }
+            });
+
+            var markers = [];
+            // Listen for the event fired when the user selects a prediction and retrieve
+            // more details for that place.
+            searchBox[0].addListener('places_changed', function () {
+
+                var places = searchBox[0].getPlaces();
+
+                if (places.length == 0) {
+                    return;
+                }
+
+                // Clear out the old markers.
+                markers.forEach(function (marker) {
+                    marker.setMap(null);
+                });
+                markers = [];
+
+                // For each place, get the icon, name and location.
+                var bounds = new google.maps.LatLngBounds();
+                places.forEach(function (place) {
+                    if (!place.geometry) {
+                        console.log("Returned place contains no geometry");
+                        return;
+                    }
+                    var icon = {
+                        url: place.icon,
+                        size: new google.maps.Size(71, 71),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(17, 34),
+                        scaledSize: new google.maps.Size(25, 25)
+                    };
+
+                    if (place.geometry.viewport) {
+                        // Only geocodes have viewport.
+                        bounds.union(place.geometry.viewport);
+                    } else {
+                        bounds.extend(place.geometry.location);
+                    }
+                });
+                map.fitBounds(bounds);
+            });
+
+
+            // Bias the SearchBox results towards current map's viewport.
+            // Code for the mobile map
+            map.addListener('bounds_changed', function () {
+                //searchBox.setBounds(map.getBounds());
+                for (i = 0; i < searchBox.length; i++) {
+                    searchBox[i].setBounds(map.getBounds());
+                }
+            });
+
+            var markers = [];
+            // Listen for the event fired when the user selects a prediction and retrieve
+            // more details for that place.
+            searchBox[1].addListener('places_changed', function () {
+
+                var places = searchBox[1].getPlaces();
+
+                if (places.length == 0) {
+                    return;
+                }
+
+                // Clear out the old markers.
+                markers.forEach(function (marker) {
+                    marker.setMap(null);
+                });
+                markers = [];
+
+                // For each place, get the icon, name and location.
+                var bounds = new google.maps.LatLngBounds();
+                places.forEach(function (place) {
+                    if (!place.geometry) {
+                        console.log("Returned place contains no geometry");
+                        return;
+                    }
+                    var icon = {
+                        url: place.icon,
+                        size: new google.maps.Size(71, 71),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(17, 34),
+                        scaledSize: new google.maps.Size(25, 25)
+                    };
+
+                    if (place.geometry.viewport) {
+                        // Only geocodes have viewport.
+                        bounds.union(place.geometry.viewport);
+                    } else {
+                        bounds.extend(place.geometry.location);
+                    }
+                });
+                map.fitBounds(bounds);
+            });
+
+
+            // Add support for search button
+            document.getElementById('findcar').onclick = function () {
+                var input = document.getElementById('pac-input');
+
+                google.maps.event.trigger(input, 'focus');
+                google.maps.event.trigger(input, 'keydown', {keyCode: 40}); // 40 = keydown
+                google.maps.event.trigger(input, 'keydown', {keyCode: 13}); // 13 = enter
+            };
+        }
+
+
+        // Hide all POI
+        var styles = {
+            default: null,
+            hide: [
+                {
+                    featureType: 'poi',
+                    stylers: [{visibility: 'off'}]
+                },
+                {
+                    featureType: 'transit',
+                    elementType: 'labels.icon',
+                    stylers: [{visibility: 'off'}]
+                },
+            ]
+        };
+
+        //disable all marker animations
+        function stopmarkers() {
+            for (var i in window.markers) {
+                window.markers[i].setAnimation(null);
+            }
+        }
+
+        function hide_popup() {
+            $("#Booking_Container").fadeOut("slow");
+            stopmarkers();
+        }
+
+
+        function hide_popup_mobile() {
+            $("#Booking_Container_mobile").fadeOut("slow");
+            stopmarkers();
+            $(".mobile_header").scrollintoview({duration: "normal"});
+            $('#pac-input-mobile').focus();
+        }
+
+        function filter_map_toggle() {
+            $(".main_wrapper").toggleClass("expand_main_wrapper");
+        }
+
+        function filter_map(filter_type) {
+
+            hide_popup();
+            //hide_popup_mobile();
+            stopmarkers();
+
+            $(".All").removeClass("selected");
+            $(".Economy").removeClass("selected");
+            $(".Standard").removeClass("selected");
+            $(".Premium").removeClass("selected");
+            $(".Utility").removeClass("selected");
+
+            $("." + filter_type).toggleClass("selected");
+
+            window.markerCluster.clearMarkers();
+
+            // Create an array store the new markers
+            var newmarkers = [];
+
+
+            for (var i in window.markers) {
+
+                //Reset before removal
+                window.markers[i].setVisible(true);
+
+
+                //Hide markers
+                if (window.markers[i].car_type != filter_type) {
+                    window.markers[i].setVisible(false);
+                }
+                else //if they are shown
+                {
+                    newmarkers.push(window.markers[i])
+                }
+
+                //Redraw the cluster marker
+                window.markerCluster.addMarkers(newmarkers)
+
+            }
+
+        }
+
+        function reset_markers() {
+
+            hide_popup();
+            //hide_popup_mobile();
+            stopmarkers();
+
+            //$("#All").removeClass("selected");
+            $(".Economy").removeClass("selected");
+            $(".Standard").removeClass("selected");
+            $(".Premium").removeClass("selected");
+            $(".Utility").removeClass("selected");
+
+            for (var i in window.markers) {
+                window.markers[i].setVisible(true);
+            }
+
+            window.markerCluster.addMarkers(window.markers);
+        }
+
+
+    </script>
+    <script src="{% static 'carshare/js/gmaps_markerclusterer.js' %}">
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWl7Uj5BgiGJIo6zS0DSbgdIuGoV9JBc0&libraries=places&callback=initMap"
+            async defer></script>
+
+
+{% endblock page-content %}
+
+{% block scripts %}
+    <script>
+        // Search box clear buttons
+        $("#searchclear, #searchclear-mobile").click(function(){
+            $("#pac-input, #pac-input-mobile").val('');
+        });
+    </script>
+    <script src="{% static "carshare/js/jquery.scrollintoview.js" %}"></script>
+{% endblock %}

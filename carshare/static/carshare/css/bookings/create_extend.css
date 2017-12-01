@@ -1,0 +1,106 @@
+#map {
+    height: 250px;
+    width: 100%;
+}
+
+.booking-info div {
+    padding: 1px 3px;
+}
+
+.booking-info .row:first-child {
+    background-color: #006699;
+    color: white;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.booking-info .row.coloured-odd {
+    background-color: #c4ebfc;
+}
+
+.booking-info .row.coloured-even {
+    background-color: #f2f2f2;
+}
+
+/* Extend only */
+
+form > fieldset p {
+    padding-left: 12px;
+}
+
+/* Create only */
+.timeline-wrapper div,
+.timeline-legend div {
+    display: inline-block;
+    margin: 3px;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.timeline-legend div {
+    padding: 10px;
+}
+
+.timeline-datepicker {
+    max-width: 250px;
+
+}
+
+.timeline a {
+    color: black;
+    user-select: none; /* stop the highlighting of text */
+}
+
+.timeline a:hover div {
+    background-color: #6fb1d5;
+}
+
+.timeline div {
+    cursor: pointer;
+    font-size: 12pt;
+}
+
+.timeline-legend > div {
+    display: inline-block;
+}
+
+div.available {
+    background-color: #c4ffc4;
+}
+
+div.unavailable {
+    background-color: #efefef;
+}
+
+div.booked_by_user {
+    background-color: #c4ebfc;
+}
+
+.timeline div.unavailable {
+    color: #7f7f7f;
+    cursor: not-allowed;
+    user-select: none; /* stop the highlighting of text */
+}
+
+.timeline div.booked_by_user {
+    cursor: not-allowed;
+    user-select: none; /* stop the highlighting of text */
+}
+
+#date_selector {
+    font-size:16px;
+    margin-top: 20px;
+    background-color: #c4ebfc;
+    padding-top:10px;
+    padding-bottom: 10px;
+    color:black;
+}
+
+#date_selector select {
+    /*width: 200px;*/
+    color:black;
+}
+
+.booking-cost-block {
+    text-align: right;
+}

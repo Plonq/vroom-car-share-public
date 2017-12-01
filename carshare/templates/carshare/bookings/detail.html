@@ -1,0 +1,165 @@
+<!---------------------------------------------------------------------------------------------------------------------
+    Author(s): Huon Imberger
+    Description: Show details of a single booking
+----------------------------------------------------------------------------------------------------------------------->
+
+{% extends 'base_narrow.html' %}
+{% load static %}
+{% block pagetitle %}{% block pageheader %}Booking Detail{% endblock %}{% endblock %}
+
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/bookings/detail.css' %}">
+{% endblock %}
+
+{% block page-content %}
+    <div class="top-spacer">
+        <div>
+            <div class="row">
+                <div class="col-xs-12" id="map"></div>
+            </div>
+        </div>
+        <div class="booking-details">
+            <div class="row text-center">
+                <div class="col-lg-12 col-sm-12 col-xs-12">Name</div>
+            </div>
+            <div class="row text-center">
+                <div class="col-lg-12 col-sm-12 col-xs-12">{{ booking.vehicle.name }}</div>
+            </div>
+
+            <div class="row text-center">
+                <div class="col-lg-6 col-sm-6 col-xs-6">Make</div>
+                <div class="col-lg-6 col-sm-6 col-xs-6">Model</div>
+            </div>
+            <div class="row text-center">
+                <div class="col-lg-6 col-sm-6 col-xs-6">{{ booking.vehicle.make }}</div>
+                <div class="col-lg-6 col-sm-6 col-xs-6">{{ booking.vehicle.model }}</div>
+            </div>
+            <div class="row text-center">
+                <div class="col-lg-6 col-sm-6 col-xs-6">From</div>
+                <div class="col-lg-6 col-sm-6 col-xs-6">To</div>
+            </div>
+            <div class="row text-center">
+                <div class="col-lg-6 col-sm-6 col-xs-6">{{ booking.schedule_start }}</div>
+                <div class="col-lg-6 col-sm-6 col-xs-6">{{ booking.schedule_end }}</div>
+            </div>
+            <div class="row text-center">
+                <div class="col-lg-6 col-sm-6 col-xs-6">Booking ID</div>
+                <div class="col-lg-6 col-sm-6 col-xs-6">Location</div>
+            </div>
+            <div class="row text-center">
+                <div class="col-lg-6 col-sm-6 col-xs-6">{{ booking.id }}</div>
+                <div class="col-lg-6 col-sm-6 col-xs-6">{{ booking.vehicle.pod.description }}</div>
+            </div>
+            <div class="row text-center">
+                <div class="col-lg-6 col-sm-6 col-xs-6">Status</div>
+                <div class="col-lg-6 col-sm-6 col-xs-6">Cost</div>
+            </div>
+            <div class="row text-center">
+                <div class="col-lg-6 col-sm-6 col-xs-6 {% if booking.is_cancelled %}cancelled{% endif %}">{{ booking.get_status }}</div>
+                <div class="col-lg-6 col-sm-6 col-xs-6">${{ booking.calculate_cost|stringformat:".2f" }}</div>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="row text-center">
+                <div class="col-xs-12">
+                    {% if not booking.is_cancelled %}
+                        {% if not booking.is_paid %}
+                            <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#confirmEnd">Pay</a>
+                            {% if booking.is_confirmed %}
+                                <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#confirmCancel">Cancel</a>
+                                <a class="btn btn-info" href="{% url 'carshare:booking_extend' booking.id %}">Extend</a>
+                            {% elif booking.is_active %}
+                                <a class="btn btn-info" href="{% url 'carshare:booking_extend' booking.id %}">Extend</a>
+                            {% endif %}
+                        {% else %}
+                            <a class="btn btn-info" href="{% url 'carshare:booking_invoice' booking.id %}">View Invoice</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Cancellation Modal -->
+        <div class="modal fade" id="confirmCancel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Confirm Cancellation</h4>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to cancel this booking?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <a href="{% url 'carshare:booking_cancel' booking.id %}" class="btn btn-danger load-after-click">Confirm Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pay Modal -->
+    <div class="modal fade" id="confirmEnd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Pay Booking</h4>
+                </div>
+                <div class="modal-body">
+                    <p>You have selected to pay your current booking.</p>
+
+                    <p>Once your booking has paid you will be sent a tax invoice via email.</p>
+
+                    <p>Paying your booking does not affect the booking itself - you are free to pay whenever suits you.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <a href="{% url 'carshare:booking_pay' booking.id %}" class="btn btn-primary load-after-click">Pay Booking</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function initMap() {
+            var styles = {
+                default: null,
+                hide: [
+                    {
+                        featureType: 'poi',
+                        stylers: [{visibility: 'off'}]
+                    },
+                    {
+                        featureType: 'transit',
+                        elementType: 'labels.icon',
+                        stylers: [{visibility: 'off'}]
+                    },
+                ]
+            };
+            var vehicle = {
+                lat: {{ booking.vehicle.pod.latitude }},
+                lng: {{ booking.vehicle.pod.longitude }}
+            };
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 16,
+                center: vehicle,
+                disableDefaultUI: true
+            });
+            map.setOptions({styles: styles['hide']});
+            var marker = new google.maps.Marker({
+                position: vehicle,
+                map: map,
+                icon: "{% static "carshare/images/Geo_icon.png" %}"
+            });
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxp8sbrSQCvnGpZedH-H7uND4GnIkwyQo&callback=initMap"></script>
+{% endblock %}

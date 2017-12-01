@@ -1,0 +1,21 @@
+{% autoescape off %}
+<html>
+<head>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+</head>
+<body>
+
+<div style="width:800px; margin:0 auto; min-height: 460px; background-color:#e4e4e6; text-align:center; font-family: 'Open Sans';">
+    <a href="https://vroom-car-share.herokuapp.com/"><img src="https://vroom-car-share.herokuapp.com/static/images/vroom_logo.eae008acac4f.png"  alt="Vroom Car Share" style="margin-top:15px; width: 250px; height: 100px;" /></a>
+    <hr style="width: 750px;"/>
+    {% block email_body %}{% endblock %}
+    <div id="socials" style="margin-top: 40px; padding-bottom: 20px;">
+        <img src="https://vroom-car-share.herokuapp.com/static/images/sm_phone.924b02b0dcb6.png" style="width:50px;" />
+        <img src="https://vroom-car-share.herokuapp.com/static/images/sm_insta.a89043b63c2e.png" style="width:50px;" />
+        <img src="https://vroom-car-share.herokuapp.com/static/images/sm_facebook.54b1d8602a5c.png" style="width:50px;" />
+        <img src="https://vroom-car-share.herokuapp.com/static/images/sm_email.6658e5881956.png" style="width:50px;" />
+        <img src="https://vroom-car-share.herokuapp.com/static/images/sm_location.bc9d18cf00b3.png" style="width:50px;" />
+    </div>
+</div>
+</body></html>
+{% endautoescape %}
